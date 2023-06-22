@@ -1,4 +1,3 @@
-// const app = document.getElementById('app')
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,28 +35,95 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-var container = document.getElementById('container');
-var jokesContainer = document.createElement('div');
-jokesContainer.className = 'card bg-light';
-jokesContainer.innerHTML = '<h1 class="text-center">Jokes</h1>';
-container === null || container === void 0 ? void 0 : container.appendChild(jokesContainer);
+// import getsvg from './getsvg';
+var app = document.getElementById('app');
+function resetButtons() {
+    var scoreDiv = document.querySelectorAll('.score');
+    scoreDiv.forEach(function (div) {
+        div.classList.remove('bg-success');
+    });
+}
 var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, fetch('https://icanhazdadjoke.com/', {
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                })
-                    .then(function (response) { return response.json(); })
-                    .then(function (data) {
-                    jokesContainer.innerHTML = "<p class=\"text-center card-body pb-0\">".concat(data.joke, "</p>");
-                })];
+            case 0:
+                resetButtons();
+                return [4 /*yield*/, fetch('https://icanhazdadjoke.com/', {
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                        .then(function (response) { return response.json(); })
+                        .then(function (data) {
+                        (jokesContainer.innerHTML = "<p class=\"text-center card-body pb-0\">".concat(data.joke, "</p>"));
+                    })];
             case 1:
                 _a.sent();
                 return [2 /*return*/];
         }
     });
 }); };
-var btn = document.getElementById('button');
+//Interface
+var container = document.createElement('div');
+container.className = "align-items-center border bg-light shadow-lg rounded-4 container d-flex flex-column justify-content-center mt-5 w-50";
+container.innerHTML = '<h3 class="text-center mt-3">Let\'\s have <strong>FUN</strong> </h3>';
+app === null || app === void 0 ? void 0 : app.appendChild(container);
+var jokesContainer = document.createElement('div');
+jokesContainer.className = 'card bg-text-ligth m-5 test';
+jokesContainer.id = 'jokes';
+container === null || container === void 0 ? void 0 : container.appendChild(jokesContainer);
+var scoreContainer = document.createElement('div');
+var btn = document.createElement('button');
+btn.className = 'btn btn-primary m-2 ';
+btn.innerHTML = 'Next Joke';
+container.appendChild(btn);
 btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', fetchJokes);
+var scores = ['Malo:1', 'Pasable:2', 'Genial:3'];
+//print score input
+var printScoreInput = function (scores) {
+    container.appendChild(scoreContainer);
+    var scoreTitle = document.createElement('h3');
+    scoreTitle.className = 'text-nowrap';
+    scoreContainer.appendChild(scoreTitle);
+    scoreTitle.innerHTML = 'Having Fun?';
+    scoreContainer.className = jokesContainer.innerText === '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
+    var scoreValuesContainer = document.createElement('div');
+    scoreContainer.appendChild(scoreValuesContainer);
+    scoreValuesContainer.className = 'd-flex flex-row justify-content-around';
+    var handleScoreState = function (e, scoreInput) {
+        resetButtons();
+        scoreInput.classList.toggle('bg-success');
+    };
+    scores.forEach(function (score) {
+        var scoreInput = document.createElement('button');
+        scoreInput.innerText = score;
+        scoreValuesContainer.appendChild(scoreInput);
+        scoreInput.className = 'm-1 score';
+        scoreInput.addEventListener('click', function (e) {
+            jokesContainer.innerText === '' ? alert('No puedes dejar el chiste en blanco') : addJokeToReport(jokesContainer.innerText, scoreInput.innerText);
+            jokesContainer.innerText !== '' ? handleScoreState(e, scoreInput) : null;
+        });
+    });
+};
+printScoreInput(scores);
+scoreContainer.className = jokesContainer.innerHTML !== '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
+console.log(jokesContainer.innerHTML.valueOf());
+btn.className = 'btn btn-primary m-2 ';
+btn.innerText = 'Next Joke';
+container.appendChild(btn);
+btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', fetchJokes);
+var reportAcudits = [
+    {
+        joke: "string",
+        resultado: "Genial",
+        date: "string"
+    }
+];
+// Función para agregar un chiste al reporte
+function addJokeToReport(joke, resultado) {
+    var fecha = new Date().toISOString();
+    var chiste = { joke: joke, resultado: resultado, date: fecha };
+    reportAcudits.push(chiste);
+    console.log(chiste);
+    console.log(reportAcudits);
+}
