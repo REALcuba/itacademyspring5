@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 // import getsvg from './getsvg';
+// import WeatherAPIfetch from './fechtWeatherAPI'
 var app = document.getElementById('app');
 function resetButtons() {
     var scoreDiv = document.querySelectorAll('.score');
@@ -121,8 +122,6 @@ var printScoreInput = function (scores) {
     return scoreContainer;
 };
 jokesContainer.innerText === '' ? null : printScoreInput(scores);
-// jokesContainer.innerText===''? null:  printScoreInput(scores)
-// printScoreInput(scores)
 scoreContainer.className = jokesContainer.innerHTML !== '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
 // console.log(jokesContainer.innerHTML.valueOf());
 btn.className = 'btn btn-primary m-2 ';
@@ -144,3 +143,23 @@ function addJokeToReport(joke, resultado) {
     console.log(chiste);
     console.log(reportAcudits);
 }
+// fetchWeatherAPI()
+//--------Weather API-----------
+var weatherContainer = document.createElement('div');
+weatherContainer.className = 'align-items-center card m-5 opacity-75 text-bg-dark ';
+app === null || app === void 0 ? void 0 : app.appendChild(weatherContainer);
+var API = 'https://api.open-meteo.com/v1/forecast?latitude=41.38879&longitude=2.159&timezone=Europe/Madrid&current_weather=true';
+var WeatherAPIfetch = function () { return __awaiter(_this, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, fetch(API)
+                    .then(function (response) { return response.json(); })
+                    .then(function (data) {
+                    console.log(data);
+                    weatherContainer.innerHTML = "<p class=\"m-0 card-body pb-0\">temperature: ".concat(data.current_weather.temperature, "</p>\n    <p class=\" card-body pb-0\">hour: ").concat(data.current_weather.time, "</p><br>");
+                })];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
+WeatherAPIfetch();

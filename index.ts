@@ -1,4 +1,5 @@
 // import getsvg from './getsvg';
+// import WeatherAPIfetch from './fechtWeatherAPI'
 const app = document.getElementById('app')
 
 function resetButtons():void{
@@ -96,9 +97,7 @@ const printScoreInput= (scores:string[])=>{
     return scoreContainer
 };
 jokesContainer.innerText===''? null: printScoreInput(scores)
-    // jokesContainer.innerText===''? null:  printScoreInput(scores)
-
-    // printScoreInput(scores)
+  
 scoreContainer.className = jokesContainer.innerHTML !== '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
 // console.log(jokesContainer.innerHTML.valueOf());
 
@@ -133,3 +132,22 @@ function addJokeToReport(joke:string, resultado:string):void {
   console.log(reportAcudits);
   
 }
+// fetchWeatherAPI()
+//--------Weather API-----------
+const weatherContainer = document.createElement('div')
+weatherContainer.className = 'align-items-center card m-5 opacity-75 text-bg-dark '
+app?.appendChild(weatherContainer)
+// weatherContainer.innerHTML="tiempo"
+
+type Weather=Promise<void>  
+const API = 'https://api.open-meteo.com/v1/forecast?latitude=41.38879&longitude=2.159&timezone=Europe/Madrid&current_weather=true'
+const WeatherAPIfetch= async (): Weather => await fetch(API)
+.then(response => response.json())
+.then(data =>{
+    console.log(data)
+    weatherContainer.innerHTML = `<p class="m-0 card-body pb-0">temperature: ${data.current_weather.temperature}</p>
+    <p class=" card-body pb-0">hour: ${data.current_weather.time}</p><br>`
+}
+    
+)
+WeatherAPIfetch()
