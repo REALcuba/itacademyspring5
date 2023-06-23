@@ -46,7 +46,8 @@ const fetchJokes = async (): Promise<void> => {
     }
 
     jokesContainer.innerHTML = `<p class="text-center card-body pb-0">joke from <strong>${randomAPI}</strong><br>${joke}</p>`
-    })
+    }).catch(error =>console.error(error)
+    )
     let scoreDiv = printScoreInput(scores)
     jokesContainer.innerText===''? null: jokesContainer.append(scoreDiv)
     btn.innerHTML = 'Next Joke'
@@ -97,7 +98,7 @@ const printScoreInput= (scores:string[])=>{
     scoreDiv.appendChild(scoreValuesContainer)
     scoreValuesContainer.className = 'd-flex flex-row justify-content-around'
     
-    const handleScoreState = ( scoreInput:HTMLElement) => {
+    const handleScoreState = ( scoreInput:HTMLElement):boolean => {
         if(!scoreInput.classList.contains('bg-success')){
             resetButtons()
             scoreInput.classList.toggle('bg-success')
@@ -105,6 +106,7 @@ const printScoreInput= (scores:string[])=>{
         }else{
             scoreInput.classList.toggle('bg-success')
         }
+        return true
     }
     
     scores.forEach((score:string)=>{
@@ -113,9 +115,9 @@ const printScoreInput= (scores:string[])=>{
         scoreValuesContainer.appendChild(scoreInput)
         scoreInput.className = 'm-1 score' 
         scoreInput.addEventListener('click', (e)=>{
-            jokesContainer.innerText === '' ? alert('No puedes dejar el chiste en blanco'):addJokeToReport(jokesContainer.innerText, scoreInput.innerText);
-            
             jokesContainer.innerText !== '' ? handleScoreState( scoreInput): null
+            scoreInput.classList.contains('bg-success') ? addJokeToReport(jokesContainer.innerText, scoreInput.innerText):scoreInput.classList.remove('bg-success');
+            
             
         })
     })
@@ -134,7 +136,9 @@ type ReportAcudits=[{
 
 }]
 const reportAcudits: ReportAcudits=[
- 
+  {  joke:'string',
+    resultado:'string',
+    date:'string'}
 ]
 
 
@@ -153,15 +157,22 @@ const weatherContainer = document.createElement('div')
 weatherContainer.className = 'align-items-center card m-5 opacity-75 text-bg-dark '
 app?.appendChild(weatherContainer)
 
-type Weather=Promise<void>  
+interface Weather{
+    current_weather: {
+        temperature: number,
+        time: string
+    }
+}  
 const API = 'https://api.open-meteo.com/v1/forecast?latitude=41.38879&longitude=2.159&timezone=Europe/Madrid&current_weather=true'
-const WeatherAPIfetch= async (): Weather => await fetch(API)
+const WeatherAPIfetch= async (): Promise<Weather[]> => await fetch(API)
 .then(response => response.json())
 .then(data =>{
     weatherContainer.innerHTML = `<p class="m-0 card-body pb-0">temperature: ${data.current_weather.temperature}</p>
     <p class=" card-body pb-0">hour: ${data.current_weather.time}</p><br>`
+    return data
 }
     
+).catch(error =>console.error(error)
 )
 
 WeatherAPIfetch()

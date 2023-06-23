@@ -75,7 +75,7 @@ var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function 
                             joke = data.setup;
                         }
                         jokesContainer.innerHTML = "<p class=\"text-center card-body pb-0\">joke from <strong>".concat(randomAPI, "</strong><br>").concat(joke, "</p>");
-                    })];
+                    }).catch(function (error) { return console.error(error); })];
             case 1:
                 _a.sent();
                 scoreDiv = printScoreInput(scores);
@@ -126,6 +126,7 @@ var printScoreInput = function (scores) {
         else {
             scoreInput.classList.toggle('bg-success');
         }
+        return true;
     };
     scores.forEach(function (score) {
         var scoreInput = document.createElement('button');
@@ -133,8 +134,8 @@ var printScoreInput = function (scores) {
         scoreValuesContainer.appendChild(scoreInput);
         scoreInput.className = 'm-1 score';
         scoreInput.addEventListener('click', function (e) {
-            jokesContainer.innerText === '' ? alert('No puedes dejar el chiste en blanco') : addJokeToReport(jokesContainer.innerText, scoreInput.innerText);
             jokesContainer.innerText !== '' ? handleScoreState(scoreInput) : null;
+            scoreInput.classList.contains('bg-success') ? addJokeToReport(jokesContainer.innerText, scoreInput.innerText) : scoreInput.classList.remove('bg-success');
         });
     });
     return scoreContainer;
@@ -142,7 +143,11 @@ var printScoreInput = function (scores) {
 jokesContainer.innerText === '' ? null : printScoreInput(scores);
 scoreContainer.className = jokesContainer.innerHTML !== '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
 btn.className = 'btn btn-primary m-2 ';
-var reportAcudits = [];
+var reportAcudits = [
+    { joke: 'string',
+        resultado: 'string',
+        date: 'string' }
+];
 // Función para agregar un chiste al reporte
 function addJokeToReport(joke, resultado) {
     var fecha = new Date().toISOString();
@@ -164,7 +169,8 @@ var WeatherAPIfetch = function () { return __awaiter(_this, void 0, void 0, func
                     .then(function (response) { return response.json(); })
                     .then(function (data) {
                     weatherContainer.innerHTML = "<p class=\"m-0 card-body pb-0\">temperature: ".concat(data.current_weather.temperature, "</p>\n    <p class=\" card-body pb-0\">hour: ").concat(data.current_weather.time, "</p><br>");
-                })];
+                    return data;
+                }).catch(function (error) { return console.error(error); })];
             case 1: return [2 /*return*/, _a.sent()];
         }
     });
