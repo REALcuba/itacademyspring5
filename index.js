@@ -44,6 +44,7 @@ function resetButtons() {
     });
 }
 var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function () {
+    var scoreDiv;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -59,6 +60,8 @@ var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function 
                     })];
             case 1:
                 _a.sent();
+                scoreDiv = printScoreInput(scores);
+                jokesContainer.innerText === '' ? null : jokesContainer.append(scoreDiv);
                 return [2 /*return*/];
         }
     });
@@ -81,18 +84,29 @@ btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', fetchJok
 var scores = ['Malo:1', 'Pasable:2', 'Genial:3'];
 //print score input
 var printScoreInput = function (scores) {
+    var _a;
     container.appendChild(scoreContainer);
+    scoreContainer.id = "scoreContainer";
+    var scoreDiv = document.createElement('div');
+    scoreDiv.id = 'scoreDiv';
+    (_a = document.getElementById('scoreDiv')) === null || _a === void 0 ? void 0 : _a.remove();
+    container.appendChild(scoreDiv);
     var scoreTitle = document.createElement('h3');
-    scoreTitle.className = 'text-nowrap';
-    scoreContainer.appendChild(scoreTitle);
+    scoreTitle.className = 'text-nowrap text-center';
+    scoreDiv.appendChild(scoreTitle);
     scoreTitle.innerHTML = 'Having Fun?';
     scoreContainer.className = jokesContainer.innerText === '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
     var scoreValuesContainer = document.createElement('div');
-    scoreContainer.appendChild(scoreValuesContainer);
+    scoreDiv.appendChild(scoreValuesContainer);
     scoreValuesContainer.className = 'd-flex flex-row justify-content-around';
-    var handleScoreState = function (e, scoreInput) {
-        resetButtons();
-        scoreInput.classList.toggle('bg-success');
+    var handleScoreState = function (scoreInput) {
+        if (!scoreInput.classList.contains('bg-success')) {
+            resetButtons();
+            scoreInput.classList.toggle('bg-success');
+        }
+        else {
+            scoreInput.classList.toggle('bg-success');
+        }
     };
     scores.forEach(function (score) {
         var scoreInput = document.createElement('button');
@@ -101,13 +115,16 @@ var printScoreInput = function (scores) {
         scoreInput.className = 'm-1 score';
         scoreInput.addEventListener('click', function (e) {
             jokesContainer.innerText === '' ? alert('No puedes dejar el chiste en blanco') : addJokeToReport(jokesContainer.innerText, scoreInput.innerText);
-            jokesContainer.innerText !== '' ? handleScoreState(e, scoreInput) : null;
+            jokesContainer.innerText !== '' ? handleScoreState(scoreInput) : null;
         });
     });
+    return scoreContainer;
 };
-printScoreInput(scores);
+jokesContainer.innerText === '' ? null : printScoreInput(scores);
+// jokesContainer.innerText===''? null:  printScoreInput(scores)
+// printScoreInput(scores)
 scoreContainer.className = jokesContainer.innerHTML !== '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
-console.log(jokesContainer.innerHTML.valueOf());
+// console.log(jokesContainer.innerHTML.valueOf());
 btn.className = 'btn btn-primary m-2 ';
 btn.innerText = 'Next Joke';
 container.appendChild(btn);

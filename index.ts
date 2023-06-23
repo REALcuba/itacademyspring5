@@ -1,7 +1,7 @@
 // import getsvg from './getsvg';
 const app = document.getElementById('app')
 
-function resetButtons(){
+function resetButtons():void{
     let scoreDiv =document.querySelectorAll('.score')  
       scoreDiv.forEach(div=>{
           div.classList.remove('bg-success')
@@ -24,6 +24,8 @@ const fetchJokes = async (): Promise<void> => {
     
     jokesContainer.innerHTML = `<p class="text-center card-body pb-0">${data.joke}</p>`
     )})
+    let scoreDiv = printScoreInput(scores)
+    jokesContainer.innerText===''? null: jokesContainer.append(scoreDiv)
 
 }
 //Interface
@@ -52,22 +54,31 @@ let scores:string[]=['Malo:1','Pasable:2','Genial:3']
 //print score input
 const printScoreInput= (scores:string[])=>{
     container.appendChild(scoreContainer)
-  
+    scoreContainer.id= "scoreContainer"
+    const scoreDiv = document.createElement('div');
+    scoreDiv.id = 'scoreDiv';
+    document.getElementById('scoreDiv')?.remove()
+    container.appendChild(scoreDiv)
     const scoreTitle= document.createElement('h3');
-    scoreTitle.className = 'text-nowrap'
-    scoreContainer.appendChild(scoreTitle)
+
+    scoreTitle.className = 'text-nowrap text-center'
+    scoreDiv.appendChild(scoreTitle)
     scoreTitle.innerHTML = 'Having Fun?'
     scoreContainer.className = jokesContainer.innerText === '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
-
+    
+    
     const scoreValuesContainer= document.createElement('div');
-    scoreContainer.appendChild(scoreValuesContainer)
+    scoreDiv.appendChild(scoreValuesContainer)
     scoreValuesContainer.className = 'd-flex flex-row justify-content-around'
     
-    const handleScoreState = (e:MouseEvent, scoreInput:HTMLElement) => {
-           resetButtons()
-           
-           scoreInput.classList.toggle('bg-success')
-          
+    const handleScoreState = ( scoreInput:HTMLElement) => {
+        if(!scoreInput.classList.contains('bg-success')){
+            resetButtons()
+            scoreInput.classList.toggle('bg-success')
+
+        }else{
+            scoreInput.classList.toggle('bg-success')
+        }
     }
     
     scores.forEach((score:string)=>{
@@ -77,16 +88,19 @@ const printScoreInput= (scores:string[])=>{
         scoreInput.className = 'm-1 score' 
         scoreInput.addEventListener('click', (e)=>{
             jokesContainer.innerText === '' ? alert('No puedes dejar el chiste en blanco'):addJokeToReport(jokesContainer.innerText, scoreInput.innerText);
-
-            jokesContainer.innerText !== '' ? handleScoreState( e, scoreInput): null
-
-            })
+            
+            jokesContainer.innerText !== '' ? handleScoreState( scoreInput): null
+            
         })
-        
-    };
-printScoreInput(scores)
+    })
+    return scoreContainer
+};
+jokesContainer.innerText===''? null: printScoreInput(scores)
+    // jokesContainer.innerText===''? null:  printScoreInput(scores)
+
+    // printScoreInput(scores)
 scoreContainer.className = jokesContainer.innerHTML !== '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
-console.log(jokesContainer.innerHTML.valueOf());
+// console.log(jokesContainer.innerHTML.valueOf());
 
 
 btn.className = 'btn btn-primary m-2 '
