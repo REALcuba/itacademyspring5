@@ -38,31 +38,49 @@ var _this = this;
 // import getsvg from './getsvg';
 // import WeatherAPIfetch from './fechtWeatherAPI'
 var app = document.getElementById('app');
+var API_1 = 'https://icanhazdadjoke.com/';
+var API_2 = 'https://v2.jokeapi.dev/joke/Any';
 function resetButtons() {
     var scoreDiv = document.querySelectorAll('.score');
     scoreDiv.forEach(function (div) {
         div.classList.remove('bg-success');
     });
 }
+var getRandomAPI = function () {
+    var randomNumber = Math.random();
+    //  return randomNumber
+    console.log(randomNumber);
+    return randomNumber < 0.5 ? API_1 : randomNumber > 0.5 ? API_2 : 'https://api.adviceslip.com/advice';
+};
 var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function () {
-    var scoreDiv;
+    var randomAPI, scoreDiv;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                // getRandomAPI
                 resetButtons();
-                return [4 /*yield*/, fetch('https://icanhazdadjoke.com/', {
+                randomAPI = getRandomAPI();
+                return [4 /*yield*/, fetch(randomAPI, {
                         headers: {
                             'Accept': 'application/json'
                         }
                     })
                         .then(function (response) { return response.json(); })
                         .then(function (data) {
-                        (jokesContainer.innerHTML = "<p class=\"text-center card-body pb-0\">".concat(data.joke, "</p>"));
+                        var joke = '';
+                        if (data.joke) {
+                            joke = data.joke;
+                        }
+                        else if (data.setup) {
+                            joke = data.setup;
+                        }
+                        jokesContainer.innerHTML = "<p class=\"text-center card-body pb-0\">joke from <strong>".concat(randomAPI, "</strong><br>").concat(joke, "</p>");
                     })];
             case 1:
                 _a.sent();
                 scoreDiv = printScoreInput(scores);
                 jokesContainer.innerText === '' ? null : jokesContainer.append(scoreDiv);
+                btn.innerHTML = 'Next Joke';
                 return [2 /*return*/];
         }
     });
@@ -79,7 +97,7 @@ container === null || container === void 0 ? void 0 : container.appendChild(joke
 var scoreContainer = document.createElement('div');
 var btn = document.createElement('button');
 btn.className = 'btn btn-primary m-2 ';
-btn.innerHTML = 'Next Joke';
+btn.innerHTML = 'Get Joke';
 container.appendChild(btn);
 btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', fetchJokes);
 var scores = ['Malo:1', 'Pasable:2', 'Genial:3'];
@@ -123,24 +141,14 @@ var printScoreInput = function (scores) {
 };
 jokesContainer.innerText === '' ? null : printScoreInput(scores);
 scoreContainer.className = jokesContainer.innerHTML !== '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
-// console.log(jokesContainer.innerHTML.valueOf());
 btn.className = 'btn btn-primary m-2 ';
-btn.innerText = 'Next Joke';
-container.appendChild(btn);
-btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', fetchJokes);
-var reportAcudits = [
-    {
-        joke: "string",
-        resultado: "Genial",
-        date: "string"
-    }
-];
+var reportAcudits = [];
 // Función para agregar un chiste al reporte
 function addJokeToReport(joke, resultado) {
     var fecha = new Date().toISOString();
     var chiste = { joke: joke, resultado: resultado, date: fecha };
     reportAcudits.push(chiste);
-    console.log(chiste);
+    //   console.log(chiste);
     console.log(reportAcudits);
 }
 // fetchWeatherAPI()
@@ -155,7 +163,6 @@ var WeatherAPIfetch = function () { return __awaiter(_this, void 0, void 0, func
             case 0: return [4 /*yield*/, fetch(API)
                     .then(function (response) { return response.json(); })
                     .then(function (data) {
-                    console.log(data);
                     weatherContainer.innerHTML = "<p class=\"m-0 card-body pb-0\">temperature: ".concat(data.current_weather.temperature, "</p>\n    <p class=\" card-body pb-0\">hour: ").concat(data.current_weather.time, "</p><br>");
                 })];
             case 1: return [2 /*return*/, _a.sent()];

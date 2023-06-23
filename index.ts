@@ -1,6 +1,9 @@
 // import getsvg from './getsvg';
 // import WeatherAPIfetch from './fechtWeatherAPI'
 const app = document.getElementById('app')
+const API_1 = 'https://icanhazdadjoke.com/'
+const API_2 = 'https://v2.jokeapi.dev/joke/Any'
+
 
 function resetButtons():void{
     let scoreDiv =document.querySelectorAll('.score')  
@@ -8,11 +11,21 @@ function resetButtons():void{
           div.classList.remove('bg-success')
       })
      }
+const getRandomAPI = ()=>{
+ let randomNumber:number = Math.random()
+//  return randomNumber
+console.log(randomNumber);
+
+ return randomNumber < 0.5 ? API_1 : randomNumber > 0.5 ? API_2 : 'https://api.adviceslip.com/advice'
+
+}
 
 const fetchJokes = async (): Promise<void> => {
-    
+    // getRandomAPI
     resetButtons()
- await fetch('https://icanhazdadjoke.com/',{
+    const randomAPI =getRandomAPI()
+ await fetch(randomAPI,{
+    
     headers: {
         'Accept': 'application/json'
     }})
@@ -20,17 +33,29 @@ const fetchJokes = async (): Promise<void> => {
 .then((data:{
     // id: string,
     joke: string,
+    setup:string,
     // status: number
-}) => {(
+}) => {
+    let joke =''
     
-    jokesContainer.innerHTML = `<p class="text-center card-body pb-0">${data.joke}</p>`
-    )})
+    if(data.joke){
+        joke = data.joke
+    }else if(data.setup){
+         joke = data.setup
+    
+    }
+
+    jokesContainer.innerHTML = `<p class="text-center card-body pb-0">joke from <strong>${randomAPI}</strong><br>${joke}</p>`
+    })
     let scoreDiv = printScoreInput(scores)
     jokesContainer.innerText===''? null: jokesContainer.append(scoreDiv)
+    btn.innerHTML = 'Next Joke'
+    // console.log(getRandomAPI());
 
 }
+
 //Interface
-const container = document.createElement('div');
+const container:HTMLElement = document.createElement('div');
 container.className = "align-items-center border bg-light shadow-lg rounded-4 container d-flex flex-column justify-content-center mt-5 w-50"
 container.innerHTML = '<h3 class="text-center mt-3">Let\'\s have <strong>FUN</strong> </h3>'
 
@@ -46,7 +71,7 @@ const scoreContainer= document.createElement('div')
 const btn =document.createElement('button')
 
 btn.className = 'btn btn-primary m-2 '
-btn.innerHTML = 'Next Joke'
+btn.innerHTML = 'Get Joke'
 container.appendChild(btn)
 btn?.addEventListener('click', fetchJokes)
 
@@ -99,14 +124,8 @@ const printScoreInput= (scores:string[])=>{
 jokesContainer.innerText===''? null: printScoreInput(scores)
   
 scoreContainer.className = jokesContainer.innerHTML !== '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
-// console.log(jokesContainer.innerHTML.valueOf());
-
 
 btn.className = 'btn btn-primary m-2 '
-btn.innerText= 'Next Joke'
-container.appendChild(btn)
-btn?.addEventListener('click', fetchJokes)
-
 
 type ReportAcudits=[{
     joke:string,
@@ -115,11 +134,7 @@ type ReportAcudits=[{
 
 }]
 const reportAcudits: ReportAcudits=[
-    {
-        joke:"string",
-        resultado: "Genial",
-        date: "string"
-    }
+ 
 ]
 
 
@@ -128,7 +143,7 @@ function addJokeToReport(joke:string, resultado:string):void {
   const fecha = new Date().toISOString();
   const chiste = { joke, resultado, date: fecha };
   reportAcudits.push(chiste);
-  console.log(chiste);
+//   console.log(chiste);
   console.log(reportAcudits);
   
 }
@@ -137,17 +152,16 @@ function addJokeToReport(joke:string, resultado:string):void {
 const weatherContainer = document.createElement('div')
 weatherContainer.className = 'align-items-center card m-5 opacity-75 text-bg-dark '
 app?.appendChild(weatherContainer)
-// weatherContainer.innerHTML="tiempo"
 
 type Weather=Promise<void>  
 const API = 'https://api.open-meteo.com/v1/forecast?latitude=41.38879&longitude=2.159&timezone=Europe/Madrid&current_weather=true'
 const WeatherAPIfetch= async (): Weather => await fetch(API)
 .then(response => response.json())
 .then(data =>{
-    console.log(data)
     weatherContainer.innerHTML = `<p class="m-0 card-body pb-0">temperature: ${data.current_weather.temperature}</p>
     <p class=" card-body pb-0">hour: ${data.current_weather.time}</p><br>`
 }
     
 )
+
 WeatherAPIfetch()
