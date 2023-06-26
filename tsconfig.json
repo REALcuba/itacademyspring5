@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "ES2022",
+    "target": "ES6",
+    "lib": ["es2015", "es2015.promise", "dom"],
+    // "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
+    // "allowJs": true,
+    // "jsx": "react-jsx"
+    // "noEmit": true,
+    // "allowImportingTsExtensions": true
+  }
+}
