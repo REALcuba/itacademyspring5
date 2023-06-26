@@ -5,3 +5,10 @@
     background-image: url(/img/green_bg.svg);
     background-repeat: no-repeat;
 } */
+
+  #scoreValuesContainer img{
+    transition: transform 1s ease-in-out;
+  }
+  #scoreValuesContainer img.selected {
+    transform: rotate(360deg);
+  }

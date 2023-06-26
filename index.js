@@ -62,13 +62,13 @@ WeatherAPIfetch();
 function resetButtons() {
     var scoreDiv = document.querySelectorAll('.score');
     scoreDiv.forEach(function (div) {
-        div.classList.remove('bg-success');
+        div.classList.remove('selected');
+        div.classList.remove('placeholder-wave');
     });
 }
-var getRandomAPI = function () {
+var getRandomNumber = function () {
     var randomNumber = Math.random();
-    console.log(randomNumber);
-    return randomNumber < 0.5 ? API_1 : API_2;
+    return randomNumber;
 };
 var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function () {
     var randomAPI;
@@ -77,7 +77,7 @@ var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function 
             case 0:
                 // getRandomAPI
                 resetButtons();
-                randomAPI = getRandomAPI();
+                randomAPI = getRandomNumber() < 0.5 ? API_1 : API_2;
                 return [4 /*yield*/, fetch(randomAPI, {
                         headers: {
                             'Accept': 'application/json'
@@ -112,95 +112,36 @@ var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function 
         }
     });
 }); };
-//Interface
-// const container:HTMLElement = document.createElement('div');
-// container.className = "align-items-center border bg-light shadow-lg rounded-4 container d-flex flex-column justify-content-center mt-5 w-50"
-// container.innerHTML = '<h3 class="text-center mt-3">Let\'\s have <strong>FUN</strong> </h3>'
-// app?.appendChild(container)
-// 
-// const jokesContainer = document.getElementById('jokes')
-// jokesContainer.className = 'card bg-text-ligth m-5 test'
-// jokesContainer.id='jokes'
-// container?.appendChild(jokesContainer)
 var scoreContainer = document.getElementById('scoreContainer');
 var jokesContainer = document.getElementById('jokes');
 var btn = document.getElementById('button');
-// scoreContainer.className = jokesContainer.innerHTML === '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 ';
-// btn.className = 'btn btn-primary m-2 '
-// btn.innerHTML = 'Get Joke'
-// container.appendChild(btn)
 btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', fetchJokes);
+// type powerScore ='Malo:1'|'Pasable:2'|'Genial:3'
 // let scores:powerScore[]=['Malo:1','Pasable:2','Genial:3']
-// const svg = document.createElement('img')
-// svg.src =  
-// <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-// <path fill="#0F62FE" d="M18.8,-17.1C34.9,-8.8,65.9,-13,77.1,-5.3C88.3,2.4,79.8,21.8,67.9,36.1C55.9,50.5,40.5,59.8,26,60.2C11.5,60.6,-2.2,52.1,-17,46.7C-31.9,41.3,-47.9,39.1,-61.1,29C-74.4,19,-84.9,1.1,-76.1,-7.2C-67.3,-15.6,-39.1,-14.3,-23.2,-22.5C-7.3,-30.8,-3.6,-48.5,-1.2,-47.2C1.3,-45.8,2.7,-25.3,18.8,-17.1Z" transform="translate(100 100)" />
-// </svg>
-// container.appendChild(svg)
-// const jokeBackground= ()=> {
-//       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"> <path fill="#0F62FE" d="M18.8,-17.1C34.9,-8.8,65.9,-13,77.1,-5.3C88.3,2.4,79.8,21.8,67.9,36.1C55.9,50.5,40.5,59.8,26,60.2C11.5,60.6,-2.2,52.1,-17,46.7C-31.9,41.3,-47.9,39.1,-61.1,29C-74.4,19,-84.9,1.1,-76.1,-7.2C-67.3,-15.6,-39.1,-14.3,-23.2,-22.5C-7.3,-30.8,-3.6,-48.5,-1.2,-47.2C1.3,-45.8,2.7,-25.3,18.8,-17.1Z" transform="translate(100 100)" /></svg>
-//     }
-//     jokeBackground()
-// export default jokeBackground
-//print score input
-var printScoreInput = function () {
-    // container.appendChild(scoreContainer)
-    // scoreContainer.id= "scoreContainer"
-    // const jokesContainer = document.getElementById('jokes')
-    // const scoreDiv = document.getElementsByClassName('scoreDiv');
-    // scoreDiv.id = 'scoreDiv';
-    // document.getElementById('scoreDiv')?.remove()
-    // container.appendChild(scoreDiv)
-    // const scoreTitle= document.createElement('h3');
-    // scoreTitle.className = 'text-nowrap text-center'
-    // scoreDiv.appendChild(scoreTitle)
-    // scoreTitle.innerHTML = 'Having Fun?'
-    // scoreContainer.className = jokesContainer.innerText !== '' ? scoreContainer.className.replace('d-none','d-block') :null ;
-    var scores = document.querySelectorAll('score');
-    // const scoreValuesContainer= document.getElementById('scoreValuesContainer');
-    // scoreDiv.appendChild(scoreValuesContainer)
-    // scoreValuesContainer.className = 'd-flex flex-row justify-content-around'
-    var handleScore = function (e) {
-        e.preventDefault();
-        var score = e.target;
-        console.log(score);
-        return score;
-    };
-    scores.forEach(function (score) {
-        score.addEventListener('click', function (e) {
-            // jokesContainer.innerText !== '' ? handleScore(e): null
-            // score.classList.contains('bg-success') ? addJokeToReport(jokesContainer.innerText, score.classList.add('bg-success')):score.classList.remove('bg-success');
-            handleScore(e);
-        });
+var scoreValuesContainer = document.getElementById("scoreValuesContainer");
+var images = scoreValuesContainer.getElementsByTagName("img");
+var _loop_1 = function (i) {
+    images[i].addEventListener("click", function () {
+        if (!images[i].classList.contains('selected')) {
+            resetButtons();
+            images[i].classList.toggle('selected');
+            images[i].classList.toggle("placeholder-wave");
+            images[i].classList.contains('selected') ? addJokeToReport(jokesContainer.innerText, images[i].getAttribute('value')) : images[i].classList.remove('selected');
+        }
+        else {
+            images[i].classList.toggle('selected');
+            images[i].classList.toggle("placeholder-wave");
+        }
     });
-    // const handleScoreState = ( scoreInput:HTMLElement):boolean => {
-    //     if(!scoreInput.classList.contains('bg-success')){
-    //         resetButtons()
-    //         scoreInput.classList.toggle('bg-success')
-    //     }else{
-    //         scoreInput.classList.toggle('bg-success')
-    //     }
-    //     return true
-    // }
-    // scores.forEach((score:string)=>{
-    //     const scoreInput= document.createElement('button');
-    //     scoreInput.innerText = score;
-    //     scoreValuesContainer.appendChild(scoreInput)
-    //     scoreInput.className = 'm-1 score' 
-    //     scoreInput.addEventListener('click', (e)=>{
-    //         jokesContainer.innerText !== '' ? handleScoreState( scoreInput): null
-    //         scoreInput.classList.contains('bg-success') ? addJokeToReport(jokesContainer.innerText, scoreInput.innerText):scoreInput.classList.remove('bg-success');
-    //     })
-    // }
-    // )
-    // return scoreContainer
 };
+for (var i = 0; i < images.length; i++) {
+    _loop_1(i);
+}
 var reportAcudits = [];
 // Función para agregar un chiste al reporte
 function addJokeToReport(joke, resultado) {
-    var fecha = new Date().toISOString();
-    var chiste = { joke: joke, resultado: resultado, date: fecha };
+    var date = new Date().toISOString();
+    var chiste = { joke: joke, resultado: resultado, date: date };
     reportAcudits.push(chiste);
-    //   console.log(chiste);
     console.log(reportAcudits);
 }
