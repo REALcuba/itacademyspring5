@@ -35,31 +35,67 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-// import getsvg from './getsvg';
-// import WeatherAPIfetch from './fechtWeatherAPI'
+// import green_bg from './img/green_bg.svg'
 var app = document.getElementById('app');
 var API_1 = 'https://icanhazdadjoke.com/';
 var API_2 = 'https://v2.jokeapi.dev/joke/Any';
+var WeatherAPIfetch;
+// fetchWeatherAPI()
+//--------Weather API-----------
+var header = document.getElementById('header');
+var weatherContainer = document.createElement('div');
+weatherContainer.className = ' d-flex  ';
+header === null || header === void 0 ? void 0 : header.appendChild(weatherContainer);
+var meteoAPI = 'https://api.open-meteo.com/v1/forecast?latitude=41.38879&longitude=2.159&timezone=Europe/Madrid&current_weather=true';
+WeatherAPIfetch = function () { return __awaiter(_this, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, fetch(meteoAPI)
+                    .then(function (response) { return response.json(); })
+                    .then(function (data) {
+                    weatherContainer.innerHTML = "<p class=\"m-0 pb-0 text-warning\">Temperature: ".concat(data.current_weather.temperature, " \u00BAC</p>\n      <p class=\"m-0 pb-0 ps-2 text-warning\"> Date&Time: ").concat(data.current_weather.time, "</p>");
+                    return data;
+                }).catch(function (error) { return console.error(error); })];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
+WeatherAPIfetch();
+//-------------------
 function resetButtons() {
     var scoreDiv = document.querySelectorAll('.score');
     scoreDiv.forEach(function (div) {
-        div.classList.remove('bg-success');
+        div.classList.remove('selected');
+        div.classList.remove('placeholder-wave');
     });
 }
-var getRandomAPI = function () {
+var getRandomNumber = function () {
     var randomNumber = Math.random();
-    //  return randomNumber
-    console.log(randomNumber);
-    return randomNumber < 0.5 ? API_1 : randomNumber > 0.5 ? API_2 : 'https://api.adviceslip.com/advice';
+    return randomNumber;
 };
-var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function () {
-    var randomAPI, scoreDiv;
+function getRandomBg() {
+    var container = document.getElementById('container');
+    var classNames = ["shapeBg", "shapeBg1", "shapeBg2"];
+    var currentClass = container.className;
+    classNames.forEach(function (className) {
+        if (currentClass.includes(className)) {
+            container.classList.remove(className);
+        }
+    });
+    var randomIndex = Math.floor(Math.random() * classNames.length);
+    var randomClass = classNames[randomIndex];
+    container.classList.add(randomClass);
+}
+var fetchJokes;
+//Fetch Jokes
+fetchJokes = function () { return __awaiter(_this, void 0, void 0, function () {
+    var randomAPI;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 // getRandomAPI
                 resetButtons();
-                randomAPI = getRandomAPI();
+                randomAPI = getRandomNumber() < 0.5 ? API_1 : API_2;
                 return [4 /*yield*/, fetch(randomAPI, {
                         headers: {
                             'Accept': 'application/json'
@@ -74,105 +110,46 @@ var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function 
                         else if (data.setup) {
                             joke = data.setup;
                         }
+                        getRandomBg();
                         jokesContainer.innerHTML = "<p class=\"text-center card-body pb-0\">joke from <strong>".concat(randomAPI, "</strong><br>").concat(joke, "</p>");
                     }).catch(function (error) { return console.error(error); })];
             case 1:
                 _a.sent();
-                scoreDiv = printScoreInput(scores);
-                jokesContainer.innerText === '' ? null : jokesContainer.append(scoreDiv);
+                scoreContainer.className = jokesContainer.innerText !== '' ? scoreContainer.className.replace('d-none', 'd-block') : null;
                 btn.innerHTML = 'Next Joke';
                 return [2 /*return*/];
         }
     });
 }); };
-//Interface
-var container = document.createElement('div');
-container.className = "align-items-center border bg-light shadow-lg rounded-4 container d-flex flex-column justify-content-center mt-5 w-50";
-container.innerHTML = '<h3 class="text-center mt-3">Let\'\s have <strong>FUN</strong> </h3>';
-app === null || app === void 0 ? void 0 : app.appendChild(container);
-var jokesContainer = document.createElement('div');
-jokesContainer.className = 'card bg-text-ligth m-5 test';
-jokesContainer.id = 'jokes';
-container === null || container === void 0 ? void 0 : container.appendChild(jokesContainer);
-var scoreContainer = document.createElement('div');
-var btn = document.createElement('button');
-btn.className = 'btn btn-primary m-2 ';
-btn.innerHTML = 'Get Joke';
-container.appendChild(btn);
+var scoreContainer = document.getElementById('scoreContainer');
+var jokesContainer = document.getElementById('jokes');
+var btn = document.getElementById('button');
 btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', fetchJokes);
-var scores = ['Malo:1', 'Pasable:2', 'Genial:3'];
-//print score input
-var printScoreInput = function (scores) {
-    var _a;
-    container.appendChild(scoreContainer);
-    scoreContainer.id = "scoreContainer";
-    var scoreDiv = document.createElement('div');
-    scoreDiv.id = 'scoreDiv';
-    (_a = document.getElementById('scoreDiv')) === null || _a === void 0 ? void 0 : _a.remove();
-    container.appendChild(scoreDiv);
-    var scoreTitle = document.createElement('h3');
-    scoreTitle.className = 'text-nowrap text-center';
-    scoreDiv.appendChild(scoreTitle);
-    scoreTitle.innerHTML = 'Having Fun?';
-    scoreContainer.className = jokesContainer.innerText === '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
-    var scoreValuesContainer = document.createElement('div');
-    scoreDiv.appendChild(scoreValuesContainer);
-    scoreValuesContainer.className = 'd-flex flex-row justify-content-around';
-    var handleScoreState = function (scoreInput) {
-        if (!scoreInput.classList.contains('bg-success')) {
+//--------------------
+//Scores
+var scoreValuesContainer = document.getElementById("scoreValuesContainer");
+var images = scoreValuesContainer.getElementsByTagName("img");
+var _loop_1 = function (i) {
+    images[i].addEventListener("click", function () {
+        if (!images[i].classList.contains('selected')) {
             resetButtons();
-            scoreInput.classList.toggle('bg-success');
+            images[i].classList.toggle('selected');
+            images[i].classList.toggle("placeholder-wave");
+            images[i].classList.contains('selected') ? addJokeToReport(jokesContainer.innerText, images[i].getAttribute('value')) : images[i].classList.remove('selected');
         }
         else {
-            scoreInput.classList.toggle('bg-success');
+            images[i].classList.toggle('selected');
+            images[i].classList.toggle("placeholder-wave");
         }
-        return true;
-    };
-    scores.forEach(function (score) {
-        var scoreInput = document.createElement('button');
-        scoreInput.innerText = score;
-        scoreValuesContainer.appendChild(scoreInput);
-        scoreInput.className = 'm-1 score';
-        scoreInput.addEventListener('click', function (e) {
-            jokesContainer.innerText !== '' ? handleScoreState(scoreInput) : null;
-            scoreInput.classList.contains('bg-success') ? addJokeToReport(jokesContainer.innerText, scoreInput.innerText) : scoreInput.classList.remove('bg-success');
-        });
     });
-    return scoreContainer;
 };
-jokesContainer.innerText === '' ? null : printScoreInput(scores);
-scoreContainer.className = jokesContainer.innerHTML !== '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 scoreCon';
-btn.className = 'btn btn-primary m-2 ';
-var reportAcudits = [
-    { joke: 'string',
-        resultado: 'string',
-        date: 'string' }
-];
-// Función para agregar un chiste al reporte
+for (var i = 0; i < images.length; i++) {
+    _loop_1(i);
+}
+var reportAcudits = [];
 function addJokeToReport(joke, resultado) {
-    var fecha = new Date().toISOString();
-    var chiste = { joke: joke, resultado: resultado, date: fecha };
+    var date = new Date().toISOString();
+    var chiste = { joke: joke, resultado: resultado, date: date };
     reportAcudits.push(chiste);
-    //   console.log(chiste);
     console.log(reportAcudits);
 }
-// fetchWeatherAPI()
-//--------Weather API-----------
-var weatherContainer = document.createElement('div');
-weatherContainer.className = 'align-items-center card m-5 opacity-75 text-bg-dark ';
-app === null || app === void 0 ? void 0 : app.appendChild(weatherContainer);
-var API = 'https://api.open-meteo.com/v1/forecast?latitude=41.38879&longitude=2.159&timezone=Europe/Madrid&current_weather=true';
-var WeatherAPIfetch = function () { return __awaiter(_this, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, fetch(API)
-                    .then(function (response) { return response.json(); })
-                    .then(function (data) {
-                    weatherContainer.innerHTML = "<p class=\"m-0 card-body pb-0\">temperature: ".concat(data.current_weather.temperature, "</p>\n    <p class=\" card-body pb-0\">hour: ").concat(data.current_weather.time, "</p><br>");
-                    return data;
-                }).catch(function (error) { return console.error(error); })];
-            case 1: return [2 /*return*/, _a.sent()];
-        }
-    });
-}); };
-WeatherAPIfetch();

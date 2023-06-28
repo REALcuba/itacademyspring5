@@ -6,18 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ApiJokes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
-    <div id="app">
-        <!-- <div id="container" > -->
-            <!-- <div class="chistes">HI</div> -->
-            <!-- <button class="btn bg-primary" id="button" >More jockes</button> -->
-        <!-- </div> -->
-        
+<body class="body bg-black">
+    <header id="header" class="d-flex align-items-center ms-3 mt-5">
+        <img class="weather-svg " src="./img/weather-svg.svg" alt="" >
+    </header>
+    <main id="app">
+<section id="container" class="align-items-center shapeBg card border-0 justify-content-center mt-5"">
+    <!-- <div class=" shapeBg img-fluid position-absolute mt-5" alt="svg" ></div> -->
+    <h3 class="text-center mt-3 card-title text-warning">Let's have <strong>FUN</strong> </h3>
+    <div id="jokes" class=" jokesContainer w-75 card-body text-light align-items-center m-5"></div>
+    <button id="button" class="btn btn-dark m-2 " >Get Joke</button>
+</section>
+<section id="scoreContainer" class="d-none position-relative ">
+    <h3 class="text-nowrap text-center text-warning p-2">Having Fun?</h3>
+    <div id="scoreDiv" class="scoreDiv d-inline  p-2">
+        <div id="scoreValuesContainer" class=" container-md w-50 d-flex p-2 flex-row justify-content-around">
+            <img src="./img/Facebook Smiley Faces.png" class="rounded-circle score"value='1' alt="Happy Face">
+            <img src="./img/Yawning Blue Sticker.png" class="rounded-circle score" value='2'alt="Boring Face">
+            <img src="./img/Grinning Smiley Face.png" class="rounded-circle score" value='3'alt="Mad Face">
+        </div>
     </div>
+</section>
+       
+    </main>
 
 
-    <script src="/index.js" type="module"></script>
+    <script type="module" src="/index.js" ></script>
+    <!-- <script type="module" src="/fetchWeatherAPI.js" ></script> -->
+  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>
