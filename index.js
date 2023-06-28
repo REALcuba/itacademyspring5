@@ -35,23 +35,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
+// import green_bg from './img/green_bg.svg'
 var app = document.getElementById('app');
 var API_1 = 'https://icanhazdadjoke.com/';
 var API_2 = 'https://v2.jokeapi.dev/joke/Any';
+var WeatherAPIfetch;
 // fetchWeatherAPI()
 //--------Weather API-----------
 var header = document.getElementById('header');
 var weatherContainer = document.createElement('div');
-weatherContainer.className = 'w-25 card m-5 opacity-75 text-bg-dark ';
+weatherContainer.className = ' d-flex  ';
 header === null || header === void 0 ? void 0 : header.appendChild(weatherContainer);
 var meteoAPI = 'https://api.open-meteo.com/v1/forecast?latitude=41.38879&longitude=2.159&timezone=Europe/Madrid&current_weather=true';
-var WeatherAPIfetch = function () { return __awaiter(_this, void 0, void 0, function () {
+WeatherAPIfetch = function () { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, fetch(meteoAPI)
                     .then(function (response) { return response.json(); })
                     .then(function (data) {
-                    weatherContainer.innerHTML = "<p class=\"m-0 card-body pb-0\">temperature: ".concat(data.current_weather.temperature, "</p>\n    <p class=\" card-body pb-0\">hour: ").concat(data.current_weather.time, "</p><br>");
+                    weatherContainer.innerHTML = "<p class=\"m-0 pb-0 text-warning\">Temperature: ".concat(data.current_weather.temperature, " \u00BAC</p>\n      <p class=\"m-0 pb-0 ps-2 text-warning\"> Date&Time: ").concat(data.current_weather.time, "</p>");
                     return data;
                 }).catch(function (error) { return console.error(error); })];
             case 1: return [2 /*return*/, _a.sent()];
@@ -59,6 +61,7 @@ var WeatherAPIfetch = function () { return __awaiter(_this, void 0, void 0, func
     });
 }); };
 WeatherAPIfetch();
+//-------------------
 function resetButtons() {
     var scoreDiv = document.querySelectorAll('.score');
     scoreDiv.forEach(function (div) {
@@ -70,7 +73,22 @@ var getRandomNumber = function () {
     var randomNumber = Math.random();
     return randomNumber;
 };
-var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function () {
+function getRandomBg() {
+    var container = document.getElementById('container');
+    var classNames = ["shapeBg", "shapeBg1", "shapeBg2"];
+    var currentClass = container.className;
+    classNames.forEach(function (className) {
+        if (currentClass.includes(className)) {
+            container.classList.remove(className);
+        }
+    });
+    var randomIndex = Math.floor(Math.random() * classNames.length);
+    var randomClass = classNames[randomIndex];
+    container.classList.add(randomClass);
+}
+var fetchJokes;
+//Fetch Jokes
+fetchJokes = function () { return __awaiter(_this, void 0, void 0, function () {
     var randomAPI;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -92,21 +110,12 @@ var fetchJokes = function () { return __awaiter(_this, void 0, void 0, function 
                         else if (data.setup) {
                             joke = data.setup;
                         }
+                        getRandomBg();
                         jokesContainer.innerHTML = "<p class=\"text-center card-body pb-0\">joke from <strong>".concat(randomAPI, "</strong><br>").concat(joke, "</p>");
-                    }).catch(function (error) { return console.error(error); })
-                    // let scoreDiv = printScoreInput()
-                    // jokesContainer.setAttribute("src", "jokeBackground")
-                    // jokesContainer.style.backgroundImage =BlueBgSvg
-                    // scoreContainer.className = jokesContainer.innerHTML === '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 ';
-                ];
+                    }).catch(function (error) { return console.error(error); })];
             case 1:
                 _a.sent();
-                // let scoreDiv = printScoreInput()
-                // jokesContainer.setAttribute("src", "jokeBackground")
-                // jokesContainer.style.backgroundImage =BlueBgSvg
-                // scoreContainer.className = jokesContainer.innerHTML === '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 ';
                 scoreContainer.className = jokesContainer.innerText !== '' ? scoreContainer.className.replace('d-none', 'd-block') : null;
-                // jokesContainer.innerText===''? null: jokesContainer.append(scoreDiv)
                 btn.innerHTML = 'Next Joke';
                 return [2 /*return*/];
         }
@@ -116,8 +125,8 @@ var scoreContainer = document.getElementById('scoreContainer');
 var jokesContainer = document.getElementById('jokes');
 var btn = document.getElementById('button');
 btn === null || btn === void 0 ? void 0 : btn.addEventListener('click', fetchJokes);
-// type powerScore ='Malo:1'|'Pasable:2'|'Genial:3'
-// let scores:powerScore[]=['Malo:1','Pasable:2','Genial:3']
+//--------------------
+//Scores
 var scoreValuesContainer = document.getElementById("scoreValuesContainer");
 var images = scoreValuesContainer.getElementsByTagName("img");
 var _loop_1 = function (i) {
@@ -138,7 +147,6 @@ for (var i = 0; i < images.length; i++) {
     _loop_1(i);
 }
 var reportAcudits = [];
-// Función para agregar un chiste al reporte
 function addJokeToReport(joke, resultado) {
     var date = new Date().toISOString();
     var chiste = { joke: joke, resultado: resultado, date: date };

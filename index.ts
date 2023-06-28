@@ -1,13 +1,19 @@
-
+// import green_bg from './img/green_bg.svg'
 const app = document.getElementById('app')
-const API_1 = 'https://icanhazdadjoke.com/'
-const API_2 = 'https://v2.jokeapi.dev/joke/Any'
+const API_1:string = 'https://icanhazdadjoke.com/'
+const API_2:string = 'https://v2.jokeapi.dev/joke/Any'
+let WeatherAPIfetch: Promise<Weather> | any;
+
+
+
 // fetchWeatherAPI()
 //--------Weather API-----------
 const header = document.getElementById('header')
 const weatherContainer = document.createElement('div')
-weatherContainer.className = 'w-25 card m-5 opacity-75 text-bg-dark '
+weatherContainer.className = ' d-flex  '
 header?.appendChild(weatherContainer)
+
+// console.log(green_bg);
 
 interface Weather{
     current_weather: {
@@ -17,11 +23,11 @@ interface Weather{
 }  
 const meteoAPI = 'https://api.open-meteo.com/v1/forecast?latitude=41.38879&longitude=2.159&timezone=Europe/Madrid&current_weather=true'
 
-const WeatherAPIfetch= async (): Promise<Weather[]> => await fetch(meteoAPI)
+ WeatherAPIfetch= async ()=> await fetch(meteoAPI)
 .then(response => response.json())
 .then(data =>{
-    weatherContainer.innerHTML = `<p class="m-0 card-body pb-0">temperature: ${data.current_weather.temperature}</p>
-    <p class=" card-body pb-0">hour: ${data.current_weather.time}</p><br>`
+    weatherContainer.innerHTML = `<p class="m-0 pb-0 text-warning">Temperature: ${data.current_weather.temperature} ºC</p>
+      <p class="m-0 pb-0 ps-2 text-warning"> Date&Time: ${data.current_weather.time}</p>`
     return data
 }
     
@@ -29,7 +35,7 @@ const WeatherAPIfetch= async (): Promise<Weather[]> => await fetch(meteoAPI)
 )
 WeatherAPIfetch()
 
-
+//-------------------
 function resetButtons():void{
     let scoreDiv =document.querySelectorAll('.score')  
       scoreDiv.forEach(div=>{
@@ -43,8 +49,25 @@ const getRandomNumber = ()=>{
  return randomNumber 
 
 }
+function getRandomBg():void {
+    const container = document.getElementById('container')
+    const classNames = ["shapeBg", "shapeBg1", "shapeBg2"];
+    const currentClass = container.className;
+    
+    classNames.forEach((className) => {
+      if (currentClass.includes(className)) {
+        container.classList.remove(className);
+      }
+    });
+    const randomIndex = Math.floor(Math.random() * classNames.length);
+    const randomClass = classNames[randomIndex];
+    
+    container.classList.add(randomClass);
+}
+let fetchJokes: Promise<Object> | any;
 
-const fetchJokes = async (): Promise<void> => {
+//Fetch Jokes
+fetchJokes = async ():Promise<typeof fetchJokes> => {
     // getRandomAPI
     resetButtons()
     
@@ -56,10 +79,8 @@ const fetchJokes = async (): Promise<void> => {
     }})
 .then(response => response.json())
 .then((data:{
-    // id: string,
     joke: string,
     setup:string,
-    // status: number
 }) => {
     let joke =''
     
@@ -69,20 +90,12 @@ const fetchJokes = async (): Promise<void> => {
          joke = data.setup
     
     }
-
+    getRandomBg()
     jokesContainer.innerHTML = `<p class="text-center card-body pb-0">joke from <strong>${randomAPI}</strong><br>${joke}</p>`
     }).catch(error =>console.error(error)
     )
-    // let scoreDiv = printScoreInput()
-    // jokesContainer.setAttribute("src", "jokeBackground")
-    // jokesContainer.style.backgroundImage =BlueBgSvg
-// scoreContainer.className = jokesContainer.innerHTML === '' ? 'd-none' : 'd-flex flex-column justify-content-between m-2 ';
-scoreContainer.className = jokesContainer.innerText !== '' ? scoreContainer.className.replace('d-none','d-block') :null ;
-    
-    // jokesContainer.innerText===''? null: jokesContainer.append(scoreDiv)
+    scoreContainer.className = jokesContainer.innerText !== '' ? scoreContainer.className.replace('d-none','d-block') :null ;
     btn.innerHTML = 'Next Joke'
-    // console.log(getRandomAPI());
-
 }
 
 
@@ -92,11 +105,8 @@ const btn =document.getElementById('button')
 
 
 btn?.addEventListener('click', fetchJokes)
-
-// type powerScore ='Malo:1'|'Pasable:2'|'Genial:3'
-// let scores:powerScore[]=['Malo:1','Pasable:2','Genial:3']
-
-
+//--------------------
+//Scores
 const scoreValuesContainer: HTMLElement = document.getElementById("scoreValuesContainer");
 const images: HTMLCollectionOf<HTMLImageElement> = scoreValuesContainer.getElementsByTagName("img");
 
@@ -116,6 +126,7 @@ for (let i = 0; i < images.length; i++) {
   });
 }
 
+// Función para agregar un chiste al reporte
 type ReportAcudits={
     joke:string,
     resultado:string,
@@ -125,7 +136,6 @@ type ReportAcudits={
 const reportAcudits: ReportAcudits[]=[]
 
 
-// Función para agregar un chiste al reporte
 function addJokeToReport(joke:string, resultado:string):void {
   const date = new Date().toISOString();
   const chiste = { joke, resultado, date };
