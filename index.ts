@@ -13,6 +13,7 @@ const weatherContainer = document.createElement('div')
 weatherContainer.className = ' d-flex  '
 header?.appendChild(weatherContainer)
 
+const meteoAPI:string = 'https://api.open-meteo.com/v1/forecast?latitude=41.38879&longitude=2.159&timezone=Europe/Madrid&current_weather=true'
 // console.log(green_bg);
 
 interface Weather{
@@ -21,12 +22,11 @@ interface Weather{
         time: string
     }
 }  
-const meteoAPI = 'https://api.open-meteo.com/v1/forecast?latitude=41.38879&longitude=2.159&timezone=Europe/Madrid&current_weather=true'
 
  WeatherAPIfetch= async ()=> await fetch(meteoAPI)
 .then(response => response.json())
 .then(data =>{
-    weatherContainer.innerHTML = `<p class="m-0 pb-0 text-warning">Temperature: ${data.current_weather.temperature} ºC</p>
+    weatherContainer.innerHTML = `<p class="m-0 pb-0 text-warning"> ${data.current_weather.temperature} ºC</p>
       <p class="m-0 pb-0 ps-2 text-warning"> Date&Time: ${data.current_weather.time}</p>`
     return data
 }

@@ -53,7 +53,7 @@ WeatherAPIfetch = function () { return __awaiter(_this, void 0, void 0, function
             case 0: return [4 /*yield*/, fetch(meteoAPI)
                     .then(function (response) { return response.json(); })
                     .then(function (data) {
-                    weatherContainer.innerHTML = "<p class=\"m-0 pb-0 text-warning\">Temperature: ".concat(data.current_weather.temperature, " \u00BAC</p>\n      <p class=\"m-0 pb-0 ps-2 text-warning\"> Date&Time: ").concat(data.current_weather.time, "</p>");
+                    weatherContainer.innerHTML = "<p class=\"m-0 pb-0 text-warning\"> ".concat(data.current_weather.temperature, " \u00BAC</p>\n      <p class=\"m-0 pb-0 ps-2 text-warning\"> Date&Time: ").concat(data.current_weather.time, "</p>");
                     return data;
                 }).catch(function (error) { return console.error(error); })];
             case 1: return [2 /*return*/, _a.sent()];
